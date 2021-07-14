@@ -16,10 +16,11 @@ export default class MovieList extends React.Component {
   };
 
   componentDidMount() {
-    const genres = [{ name: "All Genres" }, ...getGenres()];
+    const genres = [{_id:"", name: "All Genres" }, ...getGenres()];
     this.setState({ movies: getMovies(), genres });
   }
-  handleClick = (movie) => {
+
+  handleDelete = (movie) => {
     const movies = this.state.movies.filter((m) => m._id !== movie._id);
     this.setState({
       movies,
@@ -33,6 +34,10 @@ export default class MovieList extends React.Component {
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
   };
+
+  handleSort = (path) => {
+    console.log(path)
+  }
 
   handleLike = (movie) => {
     let mutatedMovies = [...this.state.movies];
@@ -81,7 +86,12 @@ export default class MovieList extends React.Component {
         </div>
         <div className="col">
           <p>Currently, there are {filtered.length} movies in the list</p>
-          <MoviesTable movies={movies} onLike={this.handleLike} onDelete={this.handleDelete}/>
+          <MoviesTable 
+            movies={movies} 
+            onLike={this.handleLike} 
+            onDelete={this.handleDelete} 
+            onSort={this.handleSort}
+          />
           <Pagination
             itemsCount={filtered.length}
             pageSize={pageSize}
