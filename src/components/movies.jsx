@@ -6,6 +6,7 @@ import { paginate } from "../utils/paginate.js";
 import ListGroup from "../components/common/listGroup";
 import MoviesTable from "./moviesTable";
 import { getGenres } from "../services/fakeGenreService";
+import _ from 'lodash';
 
 export default class MovieList extends React.Component {
   state = {
@@ -13,6 +14,7 @@ export default class MovieList extends React.Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
+    sortColumn: {path: 'title', order: 'asc'}
   };
 
   componentDidMount() {
@@ -36,7 +38,14 @@ export default class MovieList extends React.Component {
   };
 
   handleSort = (path) => {
-    console.log(path)
+    const sortColumn = {...this.state.sortColumn};
+    if (sortColumn.path === path){
+      sortColumn.order = (sortColumn.order === 'asc') ? 'desc': 'asc'
+    }else{
+      sortColumn.path = path;
+      sortColumn.order = 'asc'
+    }
+    this.setState({sortColumn})
   }
 
   handleLike = (movie) => {
@@ -67,14 +76,19 @@ export default class MovieList extends React.Component {
     const {
       pageSize,
       currentPage,
+      sortColumn,
       selectedGenre,
       movies: allMovies,
     } = this.state;
+
     const filtered =
       selectedGenre && selectedGenre._id
         ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
         : allMovies;
-    const movies = paginate(filtered, currentPage, pageSize);
+    
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const movies = paginate(sorted, currentPage, pageSize);
     return (
       <div className="row ">
         <div className="col-3">
