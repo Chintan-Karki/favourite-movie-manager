@@ -6,7 +6,7 @@ import { paginate } from "../utils/paginate.js";
 import ListGroup from "../components/common/listGroup";
 import MoviesTable from "./moviesTable";
 import { getGenres } from "../services/fakeGenreService";
-import _ from 'lodash';
+import _ from "lodash";
 
 export default class MovieList extends React.Component {
   state = {
@@ -14,11 +14,11 @@ export default class MovieList extends React.Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
-    sortColumn: {path: 'title', order: 'asc'}
+    sortColumn: { path: "title", order: "asc" },
   };
 
   componentDidMount() {
-    const genres = [{_id:"", name: "All Genres" }, ...getGenres()];
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
     this.setState({ movies: getMovies(), genres });
   }
 
@@ -37,16 +37,9 @@ export default class MovieList extends React.Component {
     this.setState({ currentPage: page });
   };
 
-  handleSort = (path) => {
-    const sortColumn = {...this.state.sortColumn};
-    if (sortColumn.path === path){
-      sortColumn.order = (sortColumn.order === 'asc') ? 'desc': 'asc'
-    }else{
-      sortColumn.path = path;
-      sortColumn.order = 'asc'
-    }
-    this.setState({sortColumn})
-  }
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
 
   handleLike = (movie) => {
     let mutatedMovies = [...this.state.movies];
@@ -85,7 +78,7 @@ export default class MovieList extends React.Component {
       selectedGenre && selectedGenre._id
         ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
         : allMovies;
-    
+
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
     const movies = paginate(sorted, currentPage, pageSize);
@@ -100,10 +93,11 @@ export default class MovieList extends React.Component {
         </div>
         <div className="col">
           <p>Currently, there are {filtered.length} movies in the list</p>
-          <MoviesTable 
-            movies={movies} 
-            onLike={this.handleLike} 
-            onDelete={this.handleDelete} 
+          <MoviesTable
+            movies={movies}
+            sortColumn={sortColumn}
+            onLike={this.handleLike}
+            onDelete={this.handleDelete}
             onSort={this.handleSort}
           />
           <Pagination
