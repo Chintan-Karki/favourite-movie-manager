@@ -66,13 +66,6 @@ const movies = [
     numberInStock: 7,
     dailyRentalRate: 3.5,
   },
-  {
-    _id: "5b2asd1ca3eeb7f6fbccd471",
-    title: "Avengers: End Game",
-    genre: { _id: "5b21ca3eeb7f6fbccd412171", name: "Action" },
-    numberInStock: 3,
-    dailyRentalRate: 4.5,
-  },
 ];
 
 export function getMovies() {

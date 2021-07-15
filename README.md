@@ -1,4 +1,4 @@
-# Getting Started with Favourite-Movie-Manager-SPA
+# Favourite-Movie-Manager-SPA
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 🙂
 
@@ -11,3 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - **Raising Events** 🎪
 - **Sorting** ፨
 - **Lodash** ┄
+- **Component Designing** ⎄
+- **Component Interface** 🚦
+- **Reusability** ∵
+- **Clean Code** 🧼
