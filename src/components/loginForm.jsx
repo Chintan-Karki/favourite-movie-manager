@@ -7,13 +7,30 @@ class LoginForm extends Component {
       username: "",
       password: "",
     },
+    error: {},
   };
 
-  //   handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     const a = this.username.current.value;
-  //     console.log("Submitted", a);
-  //   };
+  validate = () => {
+    const errors = {};
+    const { account } = this.state;
+    if (account.username.trim() === "")
+      errors.username = "Username is required.";
+    if (account.password.trim() === "")
+      errors.password = "Password is required.";
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const errors = this.validate();
+    console.log(errors);
+    this.setState({ errors });
+    if (errors) return;
+
+    //* Calling the server
+    console.log("Submitted");
+  };
 
   handleChange = ({ currentTarget: input }) => {
     const account = { ...this.state.account };
