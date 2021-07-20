@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Joi from "joi-browser";
 import Input from "./common/input";
 
 class LoginForm extends Component {
@@ -10,14 +11,27 @@ class LoginForm extends Component {
     errors: {},
   };
 
+  schema = {
+    username: Joi.string().required().label("Username"),
+    password: Joi.string().required().label("Password"),
+  };
+
   validate = () => {
+    const option = { abortEarly: false };
+    const { error } = Joi.validate(this.state.account, this.schema, option);
+    if (!error) return null;
+
     const errors = {};
-    const { account } = this.state;
-    if (account.username.trim() === "")
-      errors.username = "Username is required.";
-    if (account.password.trim() === "")
-      errors.password = "Password is required.";
-    return Object.keys(errors).length === 0 ? null : errors;
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
+  validateProperty = ({ name, value }) => {
+    const obj = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    if (!error) return null;
+    return error.details[0].message;
   };
 
   handleSubmit = (e) => {
@@ -26,19 +40,6 @@ class LoginForm extends Component {
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
-  };
-
-  validateProperty = ({ name, value }) => {
-    if (name === "username") {
-      if (value.trim() === "") {
-        return "Username is required";
-      }
-    }
-    if (name === "password") {
-      if (value.trim() === "") {
-        return "Password is required";
-      }
-    }
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -73,7 +74,9 @@ class LoginForm extends Component {
             error={errors.password}
           />
 
-          <button className="btn btn-primary">LOGIN</button>
+          <button disabled={this.validate()} className="btn btn-primary">
+            LOGIN
+          </button>
         </form>
       </div>
     );

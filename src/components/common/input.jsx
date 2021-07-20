@@ -11,7 +11,6 @@ const Input = ({ name, label, value, error, onChange }) => {
         onChange={onChange}
         type="text"
         className="form-control"
-        autoFocus
       />
       {error && <div className="alert alert-danger mt-2 p-2 ">{error}</div>}
     </div>
