@@ -7,6 +7,7 @@ class LoginForm extends Form {
     data: {
       username: "",
       password: "",
+      name: "",
     },
     errors: {},
   };
@@ -14,6 +15,7 @@ class LoginForm extends Form {
   schema = {
     username: Joi.string().required().email().label("Username"),
     password: Joi.string().required().min(5).label("Password"),
+    name: Joi.string().required().label("Name"),
   };
 
   doSubmit = () => {
@@ -27,6 +29,7 @@ class LoginForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("username", "Username")}
           {this.renderInput("password", "Password", "password")}
+          {this.renderInput("name", "Name")}
           {this.renderButton("Label")}
         </form>
       </div>

@@ -7,6 +7,7 @@ import ListGroup from "../components/common/listGroup";
 import MoviesTable from "./moviesTable";
 import { getGenres } from "../services/fakeGenreService";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 export default class MovieList extends React.Component {
   state = {
@@ -91,7 +92,7 @@ export default class MovieList extends React.Component {
     const { totalCount, data: movies } = this.getPageData();
 
     return (
-      <div className="row ">
+      <div className="row mt-4">
         <div className="col-3">
           <ListGroup
             items={this.state.genres}
@@ -100,6 +101,9 @@ export default class MovieList extends React.Component {
           />
         </div>
         <div className="col">
+          <Link className="btn btn-primary mb-3" to="/movies/new">
+            Add new movie
+          </Link>
           <p>Currently, there are {totalCount} movies in the list</p>
           <MoviesTable
             movies={movies}
